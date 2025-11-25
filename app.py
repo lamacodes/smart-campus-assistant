@@ -1,11 +1,7 @@
 import os
 from flask import Flask, request
 
-# IMPORTANT: Load environment variables FIRST before importing services
-from dotenv import load_dotenv
-load_dotenv()
-
-# Debug: Print environment variable status
+# Debug: Print environment variable status (Railway provides env vars directly)
 print(f"Environment check:")
 print(f"  OPENAI_API_KEY: {'SET' if os.getenv('OPENAI_API_KEY') else 'NOT SET'}")
 print(f"  TWILIO_ACCOUNT_SID: {'SET' if os.getenv('TWILIO_ACCOUNT_SID') else 'NOT SET'}")
@@ -16,6 +12,7 @@ from services.twilio_service import send_whatsapp_message
 from services.gsheets_service import gsheets_service
 from services.openai_service import find_best_faq, generate_fallback_response
 from services.session_service import get_user_session, update_user_session
+
 
 
 app = Flask(__name__)

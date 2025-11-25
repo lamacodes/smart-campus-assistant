@@ -1,13 +1,10 @@
 import os
-from dotenv import load_dotenv
 from openai import OpenAI
 import numpy as np
 
-# Load environment variables
-load_dotenv()
-
 # Global client variable
 _client = None
+
 
 def _get_client():
     """

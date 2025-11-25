@@ -1,14 +1,11 @@
 import os
 import json
-from dotenv import load_dotenv
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
-# Load environment variables
-load_dotenv()
-
 # Scopes required for Google Sheets API
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+
 
 class GoogleSheetsService:
     def __init__(self):
