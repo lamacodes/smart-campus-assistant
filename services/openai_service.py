@@ -6,8 +6,30 @@ import numpy as np
 # Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Global client variable
+_client = None
+
+def _get_client():
+    """
+    Lazy initialization of OpenAI client.
+    Only creates the client when actually needed.
+    """
+    global _client
+    
+    if _client is not None:
+        return _client
+    
+    api_key = os.getenv('OPENAI_API_KEY')
+    
+    if not api_key:
+        print("Warning: OPENAI_API_KEY not found. AI features will not work.")
+        return None
+    
+    _client = OpenAI(api_key=api_key)
+    print("OpenAI client initialized successfully")
+    return _client
+
+
 
 def get_embedding(text, model="text-embedding-3-small"):
     """
@@ -20,6 +42,12 @@ def get_embedding(text, model="text-embedding-3-small"):
     Returns:
         list: The embedding vector.
     """
+    client = _get_client()
+    
+    if not client:
+        print("Error: OpenAI client not initialized.")
+        return None
+    
     try:
         text = text.replace("\n", " ")
         response = client.embeddings.create(input=[text], model=model)
@@ -27,6 +55,7 @@ def get_embedding(text, model="text-embedding-3-small"):
     except Exception as e:
         print(f"Error generating embedding: {e}")
         return None
+
 
 def cosine_similarity(vec1, vec2):
     """
@@ -106,6 +135,11 @@ def generate_fallback_response(user_query):
     Returns:
         str: A helpful response or escalation message.
     """
+    client = _get_client()
+    
+    if not client:
+        return "I'm sorry, I couldn't process your question at the moment. Please contact our office at exchange@jbnu.ac.kr for assistance."
+    
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -120,3 +154,4 @@ def generate_fallback_response(user_query):
     except Exception as e:
         print(f"Error generating fallback response: {e}")
         return "I'm sorry, I couldn't find an answer to your question. Please contact our office at exchange@jbnu.ac.kr for assistance."
+
