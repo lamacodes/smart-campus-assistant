@@ -74,6 +74,15 @@ graph TD
 
 ---
 
+## 📦 Deployment & Test Results
+
+- **Deployment URL:** https://web-production-4871a.up.railway.app
+- **Live Test:** Sending "When is the deadline?" via WhatsApp returned the correct FAQ answer (**2025년 11월 28일입니다.**). This confirms that the OpenAI embedding search and fallback logic are working as expected.
+
+The system is now fully operational on Railway and ready for further enhancements.
+
+---
+
 ## 🚦 6. 메시지 처리 및 라우팅 로직
 
 1. **메시지 수신:** Twilio Webhook을 통해 메시지 도착

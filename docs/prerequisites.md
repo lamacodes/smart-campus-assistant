@@ -18,25 +18,22 @@ WhatsApp 메시지를 주고받기 위한 게이트웨이입니다.
 - **할 일:**
     1. 회원가입 (무료 Trial 계정으로 시작 가능)
     2. Console 대시보드에서 `Account SID` 확인 및 저장
-    3. **Settings** > **API Keys & Tokens** > **API Keys** 이동
-    4. `Create API Key` 클릭 (Standard 타입)
-    5. 생성된 `SID`와 `Secret`을 안전한 곳에 저장 (Secret은 다시 볼 수 없음)
-    6. **Messaging** > **Try it out** > **Send a WhatsApp message** 메뉴로 이동
-    7. Sandbox 활성화 (화면에 보이는 코드를 WhatsApp으로 전송하여 테스트)
+    3. **Settings > API Keys & Tokens > API Keys** 로 이동
+    4. `Create API Key` 클릭 (Standard 타입) → **API Key SID**와 **API Key Secret**를 안전한 곳에 저장 (Secret은 다시 볼 수 없음)
+    5. **Messaging > Try it out > Send a WhatsApp message** 메뉴로 이동
+    6. Sandbox 활성화 (화면에 보이는 코드를 WhatsApp으로 전송하여 테스트)
 
 ## 3. Google Cloud Platform (GCP) & Sheets API (필수)
 FAQ 데이터를 Google Sheets에서 불러오기 위해 필요합니다.
 - **사이트:** [Google Cloud Console](https://console.cloud.google.com/)
 - **할 일:**
     1. 새 프로젝트 생성 (예: `jbnu-chatbot`)
-    2. **API 및 서비스** > **라이브러리** 이동
-    3. `Google Sheets API` 검색 후 **사용(Enable)** 클릭
-    4. **API 및 서비스** > **사용자 인증 정보(Credentials)** 이동
-    5. **사용자 인증 정보 만들기** > **서비스 계정(Service Account)** 선택
-    6. 생성된 서비스 계정의 이메일 주소(`...iam.gserviceaccount.com`) 복사
-    7. **키(Keys)** 탭에서 `키 추가` > `새 키 만들기` > `JSON` 선택하여 다운로드
-    8. 다운로드된 JSON 파일의 이름을 `credentials.json`으로 변경하고 프로젝트 폴더에 저장
-    9. `.env` 파일에 `GOOGLE_SHEETS_CREDENTIALS_JSON=credentials.json` 설정
+    2. **API 및 서비스 > 라이브러리** 이동 → `Google Sheets API` 사용(Enable) 클릭
+    3. **API 및 서비스 > 사용자 인증 정보(Credentials)** 이동 → **서비스 계정(Service Account)** 만들기
+    4. 생성된 서비스 계정 이메일(`...iam.gserviceaccount.com`) 복사
+    5. **키(Keys)** 탭에서 `키 추가` > `새 키 만들기` > `JSON` 선택하여 다운로드
+    6. 다운로드된 JSON 파일 이름을 `credentials.json`으로 변경하고 프로젝트 루트에 저장
+    7. `.env` 파일에 `GOOGLE_CREDENTIALS_JSON=credentials.json` 설정
 
 ## 4. Google Sheet 생성 (데이터)
 - **할 일:**

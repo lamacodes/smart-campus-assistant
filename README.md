@@ -1,18 +1,18 @@
 # JBNU WhatsApp Chatbot
 
-An AI-powered WhatsApp chatbot for JBNU International Office to automatically answer student inquiries.
+An AI‑powered WhatsApp chatbot for JBNU International Office to automatically answer student inquiries.
 
 ## Features
 - 24/7 automated FAQ responses
-- AI-powered semantic search using OpenAI embeddings
+- AI‑powered semantic search using OpenAI embeddings
 - Google Sheets integration for easy FAQ management
 - Fallback GPT responses for unmatched questions
-- In-memory user session management
+- In‑memory user session management
 
 ## Tech Stack
 - **Backend:** Python Flask
 - **Messaging:** Twilio WhatsApp API
-- **AI:** OpenAI (Embeddings + GPT-3.5-turbo)
+- **AI:** OpenAI (Embeddings + GPT‑3.5‑turbo)
 - **Data:** Google Sheets API
 - **Deployment:** Railway
 
@@ -30,40 +30,35 @@ Copy `.env.example` to `.env` and fill in your credentials:
 ```bash
 cp .env.example .env
 ```
-
 Required variables:
 - `OPENAI_API_KEY`
 - `TWILIO_ACCOUNT_SID`
 - `TWILIO_API_KEY_SID` and `TWILIO_API_KEY_SECRET`
 - `TWILIO_WHATSAPP_NUMBER`
 - `GOOGLE_SHEET_ID`
-- `GOOGLE_SHEETS_CREDENTIALS_JSON` (path to credentials.json)
+- `GOOGLE_CREDENTIALS_JSON` (full JSON content of the service‑account file)
 
 ### 3. Add Google Service Account Credentials
-Place your `credentials.json` file in the project root directory.
+Place your `credentials.json` file in the project root directory (or paste its JSON into `GOOGLE_CREDENTIALS_JSON`).
 
 ### 4. Run Locally
 ```bash
 python app.py
 ```
-
 The server will start on `http://localhost:5002`.
 
 ## Deployment to Railway
-
-1. Push your code to GitHub (make sure `.env` and `credentials.json` are in `.gitignore`)
-2. Connect your GitHub repo to Railway
-3. Add environment variables in Railway dashboard
-4. Upload `credentials.json` content as an environment variable or use Railway's file storage
-5. Railway will automatically detect `Procfile` and deploy
+1. Push your code to GitHub (ensure `.env` and `credentials.json` are in `.gitignore`).
+2. Connect your GitHub repo to Railway.
+3. Add the environment variables in the Railway dashboard (same as above).
+4. Railway will automatically detect the `Procfile` and deploy.
+5. **Deployment URL:** `https://web-production-4871a.up.railway.app`
 
 ## Testing
-
 ### Test Google Sheets Connection
 ```bash
 python test_sheets.py
 ```
-
 ### Test OpenAI Service
 ```bash
 python test_openai.py
@@ -79,6 +74,9 @@ chatbot-wechat/
 │   ├── openai_service.py       # AI embeddings & search
 │   └── session_service.py      # User session management
 ├── docs/                       # Documentation
+├── tests/                      # Test scripts
+│   ├── test_openai.py
+│   └── test_sheets.py
 ├── requirements.txt            # Python dependencies
 ├── Procfile                    # Deployment config
 └── .env.example                # Environment template

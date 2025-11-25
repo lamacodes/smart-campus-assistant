@@ -12,7 +12,7 @@ def test_sheets():
     if not os.getenv('GOOGLE_SHEET_ID'):
         print("Error: GOOGLE_SHEET_ID is not set in .env")
         return
-
+    
     data = gsheets_service.load_faq_data()
     
     if data:
