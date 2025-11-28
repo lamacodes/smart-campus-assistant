@@ -4,20 +4,20 @@
 
 1. **Git 저장소 초기화**
    ```bash
-   cd chatbot-wechat
+   cd smart-campus-assistant
    git init
    git add .
-   git commit -m "Initial commit: UNIV WhatsApp Chatbot"
+   git commit -m "Initial commit: Smart Campus Assistant"
    ```
 
 2. **GitHub 저장소 생성**
    - https://github.com/new 로 이동합니다.
-   - 새 저장소를 생성합니다 (예: `univ-whatsapp-chatbot`). **README로 초기화하지 마세요.**
+   - 새 저장소를 생성합니다 (예: `smart-campus-assistant`). **README로 초기화하지 마세요.**
    - 저장소 URL을 복사합니다.
 
 3. **GitHub에 푸시**
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/univ-whatsapp-chatbot.git
+   git remote add origin https://github.com/lamacodes/smart-campus-assistant.git
    git branch -M main
    git push -u origin main
    ```
@@ -25,7 +25,7 @@
 4. **Railway에 배포**
    - Railway 대시보드(https://railway.app/dashboard)를 엽니다.
    - **New Project** → **Deploy from GitHub repo**를 클릭합니다.
-   - `univ-whatsapp-chatbot` 저장소를 선택합니다.
+   - `smart-campus-assistant` 저장소를 선택합니다.
    - Railway가 `Procfile`을 감지하고 배포를 시작합니다.
 
 ## 환경 변수 설정 (Railway)

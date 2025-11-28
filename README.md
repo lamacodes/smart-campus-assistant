@@ -1,4 +1,4 @@
-# UNIV 왓츠앱 챗봇 (UNIV WhatsApp Chatbot)
+# Smart Campus Assistant
 
 UNIV 국제교류처를 위한 AI 기반 왓츠앱 챗봇으로, 학생들의 문의에 자동으로 답변해줍니다. 이 프로젝트는 OpenAI의 GPT와 임베딩(Embeddings)을 활용하여 Google Sheets FAQ 데이터베이스를 기반으로 정확하고 문맥에 맞는 답변을 제공합니다.
 
@@ -18,8 +18,8 @@ UNIV 국제교류처를 위한 AI 기반 왓츠앱 챗봇으로, 학생들의 �
 
 ### 1. 복제 및 설치
 ```bash
-git clone https://github.com/YOUR_USERNAME/univ-whatsapp-chatbot.git
-cd univ-whatsapp-chatbot
+git clone https://github.com/lamacodes/smart-campus-assistant.git
+cd smart-campus-assistant
 python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt

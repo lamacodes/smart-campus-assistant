@@ -17,7 +17,7 @@ print(f"Loaded {len(FAQ_DATA)} FAQ entries.")
 
 @app.route('/')
 def home():
-    return "UNIV WhatsApp Chatbot is running!"
+    return "Smart Campus Assistant is running!"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
