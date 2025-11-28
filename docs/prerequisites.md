@@ -27,7 +27,7 @@ WhatsApp 메시지를 주고받기 위한 게이트웨이입니다.
 FAQ 데이터를 Google Sheets에서 불러오기 위해 필요합니다.
 - **사이트:** [Google Cloud Console](https://console.cloud.google.com/)
 - **할 일:**
-    1. 새 프로젝트 생성 (예: `jbnu-chatbot`)
+    1. 새 프로젝트 생성 (예: `univ-chatbot`)
     2. **API 및 서비스 > 라이브러리** 이동 → `Google Sheets API` 사용(Enable) 클릭
     3. **API 및 서비스 > 사용자 인증 정보(Credentials)** 이동 → **서비스 계정(Service Account)** 만들기
     4. 생성된 서비스 계정 이메일(`...iam.gserviceaccount.com`) 복사

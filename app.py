@@ -1,19 +1,12 @@
 import os
 from flask import Flask, request
-
-# Debug: Print environment variable status (Railway provides env vars directly)
-print(f"Environment check:")
-print(f"  OPENAI_API_KEY: {'SET' if os.getenv('OPENAI_API_KEY') else 'NOT SET'}")
-print(f"  TWILIO_ACCOUNT_SID: {'SET' if os.getenv('TWILIO_ACCOUNT_SID') else 'NOT SET'}")
-print(f"  GOOGLE_CREDENTIALS_JSON: {'SET' if os.getenv('GOOGLE_CREDENTIALS_JSON') else 'NOT SET'}")
+import config
 
 # Import services
 from services.twilio_service import send_whatsapp_message
 from services.gsheets_service import gsheets_service
 from services.openai_service import find_best_faq, generate_fallback_response
 from services.session_service import get_user_session, update_user_session
-
-
 
 app = Flask(__name__)
 
@@ -24,7 +17,7 @@ print(f"Loaded {len(FAQ_DATA)} FAQ entries.")
 
 @app.route('/')
 def home():
-    return "JBNU WhatsApp Chatbot is running!"
+    return "UNIV WhatsApp Chatbot is running!"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -65,7 +58,7 @@ def process_message(message, session):
         str: The response to send to the user.
     """
     # Try to find a matching FAQ
-    match = find_best_faq(message, FAQ_DATA, threshold=0.7)
+    match = find_best_faq(message, FAQ_DATA, threshold=config.FAQ_MATCH_THRESHOLD)
     
     if match:
         # Return the FAQ answer
@@ -75,4 +68,5 @@ def process_message(message, session):
         return generate_fallback_response(message)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    port = int(os.getenv('PORT', 5002))
+    app.run(debug=True, port=port)

@@ -47,7 +47,7 @@ def get_embedding(text, model="text-embedding-3-small"):
     
     try:
         text = text.replace("\n", " ")
-        response = client.embeddings.create(input=[text], model=model)
+        response = client.embeddings.create(input=[text], model=config.OPENAI_EMBEDDING_MODEL)
         return response.data[0].embedding
     except Exception as e:
         print(f"Error generating embedding: {e}")
@@ -77,13 +77,13 @@ def cosine_similarity(vec1, vec2):
     
     return dot_product / (norm_vec1 * norm_vec2)
 
-def find_best_faq(user_query, faq_list, threshold=0.7):
+def find_best_faq(user_query, faq_data, threshold=config.FAQ_MATCH_THRESHOLD):
     """
     Find the best matching FAQ entry for a user query using embeddings.
     
     Args:
         user_query (str): The user's question.
-        faq_list (list): List of FAQ dictionaries with 'question', 'answer', etc.
+        faq_data (list): List of FAQ dictionaries with 'question', 'answer', etc.
         threshold (float): Minimum similarity score to consider a match.
         
     Returns:
@@ -97,7 +97,7 @@ def find_best_faq(user_query, faq_list, threshold=0.7):
     best_match = None
     best_score = 0.0
     
-    for faq in faq_list:
+    for faq in faq_data:
         # Generate embedding for FAQ question
         faq_question = faq.get('question', '')
         if not faq_question:
@@ -135,20 +135,18 @@ def generate_fallback_response(user_query):
     client = _get_client()
     
     if not client:
-        return "I'm sorry, I couldn't process your question at the moment. Please contact our office at exchange@jbnu.ac.kr for assistance."
+        return config.FALLBACK_ERROR_MESSAGE
     
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=config.OPENAI_MODEL,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant for JBNU International Office. If you don't know the answer, politely say so and suggest contacting the office at exchange@jbnu.ac.kr."},
+                {"role": "system", "content": config.SYSTEM_PROMPT},
                 {"role": "user", "content": user_query}
             ],
-            temperature=0.3,
-            max_tokens=150
+            temperature=config.OPENAI_TEMPERATURE,
         )
         return response.choices[0].message.content
     except Exception as e:
         print(f"Error generating fallback response: {e}")
-        return "I'm sorry, I couldn't find an answer to your question. Please contact our office at exchange@jbnu.ac.kr for assistance."
-
+        return config.FALLBACK_NO_MATCH_MESSAGE

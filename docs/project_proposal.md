@@ -1,8 +1,8 @@
-# JBNU WhatsApp Exchange Student Assistant 프로젝트 기획서
+# UNIV WhatsApp Exchange Student Assistant 프로젝트 기획서
 
 ## 📌 1. 프로젝트 개요
-- **서비스 명:** JBNU WhatsApp Exchange Student Assistant
-- **프로젝트 목표:** 전북대학교 해외 학생, 교수, 파트너 대학 관계자의 문의를 WhatsApp을 통해 24시간 자동 처리하여 국제교류처 직원의 업무 부담 경감
+- **서비스 명:** UNIV WhatsApp Exchange Student Assistant
+- **프로젝트 목표:** 대학교 해외 학생, 교수, 파트너 대학 관계자의 문의를 WhatsApp을 통해 24시간 자동 처리하여 국제교류처 직원의 업무 부담 경감
 - **주요 운영자:** 국제교류처 직원 (비개발자 친화적 환경 제공)
 - **핵심 플랫폼:** WhatsApp Business API (via Twilio) → Flask Backend → AI Agent
 
@@ -76,7 +76,7 @@ graph TD
 
 ## 📦 Deployment & Test Results
 
-- **Deployment URL:** https://web-production-4871a.up.railway.app
+- **Deployment URL:** https://your-project-name.up.railway.app
 - **Live Test:** Sending "When is the deadline?" via WhatsApp returned the correct FAQ answer (**2025년 11월 28일입니다.**). This confirms that the OpenAI embedding search and fallback logic are working as expected.
 
 The system is now fully operational on Railway and ready for further enhancements.
