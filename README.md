@@ -2,6 +2,14 @@
 
 UNIV 국제교류처를 위한 AI 기반 왓츠앱 챗봇으로, 학생들의 문의에 자동으로 답변해줍니다. 이 프로젝트는 OpenAI의 GPT와 임베딩(Embeddings)을 활용하여 Google Sheets FAQ 데이터베이스를 기반으로 정확하고 문맥에 맞는 답변을 제공합니다.
 
+## 시스템 아키텍처 (System Architecture)
+
+Smart Campus Assistant는 OpenAI의 지능형 기능과 Google Sheets의 간편한 데이터 관리를 활용하는 왓츠앱(WhatsApp) 기반 챗봇입니다.
+
+![Architecture Diagram](docs/architecture_diagram.png)
+
+*상세한 내용은 [아키텍처 문서](docs/architecture.md)를 참고하세요.*
+
 ## 📚 문서 (Documentation)
 - **[프로젝트 기획서](docs/project_proposal.md)**: 상세한 프로젝트 목표, 아키텍처 및 로드맵.
 - **[사전 준비 사항](docs/prerequisites.md)**: 필요한 계정 및 API 키 (OpenAI, Twilio, Google Cloud).
