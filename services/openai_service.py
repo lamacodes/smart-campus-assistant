@@ -1,6 +1,7 @@
 import os
 from openai import OpenAI
 import numpy as np
+import config
 
 # Global client variable
 _client = None
