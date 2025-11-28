@@ -17,7 +17,11 @@
 
 ---
 
-## 🏛 3. 시스템 아키텍처
+## 🏛 3. 시스템 아키텍처 (System Architecture)
+
+### 3.1 현재 아키텍처 (Current Implementation)
+현재 버전은 빠르고 가벼운 실행을 위해 **In-Memory 세션**과 **Google Sheets**를 활용합니다.
+
 ```mermaid
 graph TD
     User[WhatsApp User] -->|Message| WA[WhatsApp Business API]
@@ -25,7 +29,26 @@ graph TD
     Twilio -->|POST /webhook| Server[Flask Server (Railway)]
     
     subgraph Backend
-        Server -->|Read/Write| DB[(Supabase - User State)]
+        Server -->|Read/Write| Mem[(In-Memory Session)]
+        Server -->|Fetch Data| GSheets[Google Sheets (FAQ Data)]
+        Server -->|Embedding/Completion| OpenAI[OpenAI API]
+    end
+    
+    Server -->|Response| Twilio
+    Twilio -->|Reply| User
+```
+
+### 3.2 목표 아키텍처 (Future Roadmap)
+추후 안정적인 데이터 영속성을 위해 **Supabase** 도입이 예정되어 있습니다.
+
+```mermaid
+graph TD
+    User[WhatsApp User] -->|Message| WA[WhatsApp Business API]
+    WA -->|Webhook| Twilio
+    Twilio -->|POST /webhook| Server[Flask Server (Railway)]
+    
+    subgraph Backend
+        Server -->|Read/Write| DB[(Supabase - User State & Logs)]
         Server -->|Fetch Data| GSheets[Google Sheets (FAQ Data)]
         Server -->|Embedding/Completion| OpenAI[OpenAI API]
     end
@@ -38,21 +61,29 @@ graph TD
 
 ## 🧩 4. 기술 스택 명세
 
+### 4.1 현재 구현됨 (Implemented)
 | 영역 | 기술 | 선정 이유 |
 |------|------|-----------|
 | **Messaging Gateway** | Twilio Sandbox / API | WhatsApp 연동의 표준, 안정적인 API 제공 |
 | **Backend** | Python Flask | 가볍고 빠른 개발 가능, 풍부한 AI 라이브러리 생태계 |
 | **Hosting** | Railway | 간편한 배포, CI/CD 자동화, 무료/저렴한 플랜 |
-| **Database** | Supabase (PostgreSQL) | 사용자 세션 및 대화 상태의 안정적인 영구 저장 |
+| **Session Store** | **In-Memory (Python Dict)** | MVP 단계에서의 빠른 개발 및 배포 용이성 |
 | **CMS (FAQ)** | Google Sheets API | 엑셀에 익숙한 교직원이 별도 학습 없이 데이터 관리 가능 |
 | **AI / NLP** | OpenAI (Embeddings + GPT) | 높은 정확도의 의도 파악 및 자연스러운 답변 생성 |
+
+### 4.2 추후 도입 예정 (Planned)
+| 영역 | 기술 | 선정 이유 |
+|------|------|-----------|
+| **Database** | **Supabase (PostgreSQL)** | 사용자 세션 영구 저장, 대화 로그 분석, 안정성 확보 |
+| **Analytics** | Custom Dashboard | 국가별, 시기별 질문 빈도 분석 |
 
 ---
 
 ## 📁 5. 데이터 구조
 
-### 5.1 사용자 세션 테이블 (Supabase)
-사용자의 현재 상태와 역할을 관리하여 문맥에 맞는 대화를 유지합니다.
+### 5.1 사용자 세션 데이터
+**현재 (Current):** Python Dictionary를 사용하여 메모리 내에서 관리 (서버 재시작 시 초기화됨).
+**미래 (Future):** Supabase `users` 테이블에 영구 저장.
 
 | 컬럼명 | 타입 | 설명 | 예시 |
 |--------|------|------|------|
@@ -86,7 +117,9 @@ The system is now fully operational on Railway and ready for further enhancement
 ## 🚦 6. 메시지 처리 및 라우팅 로직
 
 1. **메시지 수신:** Twilio Webhook을 통해 메시지 도착
-2. **세션 확인:** Supabase에서 사용자 조회 (신규 유저인 경우 역할 설정 단계 진입)
+2. **세션 확인:**
+   - **Current:** 메모리(Dictionary)에서 사용자 조회
+   - **Future:** Supabase DB 조회
 3. **의도 파악 (Intent Classification):**
    - **Rule-based:** 특정 키워드(MOU, Urgent 등) 포함 여부 확인
    - **AI Semantic Search:** Google Sheets 데이터와 사용자 질문 간의 유사도 분석
@@ -94,7 +127,9 @@ The system is now fully operational on Railway and ready for further enhancement
    - **FAQ 매칭 성공:** 미리 정의된 답변 전송
    - **매칭 실패 (Low Confidence):** GPT를 활용하여 일반적인 안내 또는 담당자 연결 안내
    - **특수 키워드 감지:** "Human Escalation" 트리거 (직원 알림 발송)
-5. **로그 저장:** 대화 내용 및 처리 결과를 Supabase에 저장
+5. **로그 저장:**
+   - **Current:** 콘솔(Console) 로그 출력
+   - **Future:** Supabase에 대화 이력 영구 저장
 
 ### 라우팅 규칙 예시
 | 질문 유형 | 처리 방식 | 비고 |
@@ -115,17 +150,23 @@ The system is now fully operational on Railway and ready for further enhancement
 
 ## 🚀 8. 확장 로드맵
 
-### Phase 1 (MVP)
+### Phase 1 (MVP - 완료됨)
 - [x] Google Sheets 연동 FAQ 챗봇
 - [x] OpenAI Embedding 기반 검색
-- [x] 기본적인 역할(Role) 분류
+- [x] 기본적인 역할(Role) 분류 (In-Memory)
+- [x] Railway 배포 및 Twilio 연동
 
-### Phase 2 (기능 고도화)
+### Phase 2 (데이터 영속성 및 안정화 - 예정)
+- [ ] **Supabase 도입:** 사용자 세션 및 대화 로그 영구 저장
+- [ ] **알림 시스템:** 중요 문의 발생 시 이메일/Slack 알림
+- [ ] **에러 핸들링 강화:** API 장애 시 우회 로직
+
+### Phase 3 (기능 고도화)
 - [ ] **다국어 지원 (i18n):** 영어, 한국어, 프랑스어 등 자동 감지 및 번역
 - [ ] **통계 대시보드:** 국가별, 시기별 질문 빈도 분석 리포트 제공
 - [ ] **알림 시스템 강화:** Slack 또는 Email로 중요 문의 실시간 전달
 
-### Phase 3 (시스템 통합)
+### Phase 4 (시스템 통합)
 - [ ] **학사 시스템 연동:** 학생 개인별 합격 여부 등 조회 기능 (보안 강화 필요)
 - [ ] **옴니채널:** WhatsApp 외에 카카오톡, 인스타그램 DM 등으로 채널 확장
 
